@@ -40,8 +40,7 @@ void show_lychrel_candidates(long last_number)
 	for (number = 1; number <= last_number; number++)
 	{
 		/* Если оно является кандидатом в числа Лишрел, напечатаем его */
-		if (is_lychrel_candidate(number))
-		{
+	    if (is_lychrel_candidate(number)){
 			printf("%ld\n", number);
 		}
 	}

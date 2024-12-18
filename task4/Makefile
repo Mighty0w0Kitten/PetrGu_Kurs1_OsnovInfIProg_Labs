@@ -2,28 +2,43 @@
 
 # Компилятор и флаги компиляции
 CC = gcc
-CFLAGS = -Wall -O2
+CFLAGS = -Wall -Wextra -std=c11
 
-# Цели
-all: primes
+# Файлы и цели
+PRIMES_EXEC = primes
+GOLDBACH_EXEC = goldbach
+PRIMES_OBJS = primes.o calculate_primes.o
+GOLDBACH_OBJS = goldbach.o calculate_primes.o
 
-# Компиляция программы primes
-primes: primes.o calculate_primes.o
-	$(CC) $(CFLAGS) -o primes primes.o calculate_primes.o
+# Сборка всех целей
+all: $(PRIMES_EXEC) $(GOLDBACH_EXEC)
+# Цель all собирает обе программы: primes и goldbach.
+# Используется как псевдоцель для сборки всех файлов за один вызов.
 
-# Компиляция объекта для primes.c
+# Сборка программы primes
+$(PRIMES_EXEC): $(PRIMES_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+# Цель primes собирает исполняемый файл primes из объектов primes.o и calculate_primes.o.
+
+# Сборка программы goldbach
+$(GOLDBACH_EXEC): $(GOLDBACH_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+# Цель goldbach собирает исполняемый файл goldbach из объектов goldbach.o и calculate_primes.o.
+
+# Компиляция исходников
 primes.o: primes.c calculate_primes.h
 	$(CC) $(CFLAGS) -c primes.c
+# Цель primes.o компилирует исходный файл primes.c в объектный файл primes.o.
 
-# Компиляция объекта для calculate_primes.c
 calculate_primes.o: calculate_primes.c calculate_primes.h
 	$(CC) $(CFLAGS) -c calculate_primes.c
+# Цель calculate_primes.o компилирует исходный файл calculate_primes.c в объектный файл calculate_primes.o.
 
-# Очистка скомпилированных файлов
+goldbach.o: goldbach.c calculate_primes.h
+	$(CC) $(CFLAGS) -c goldbach.c
+# Цель goldbach.o компилирует исходный файл goldbach.c в объектный файл goldbach.o.
+
+# Удаление скомпилированных файлов
 clean:
-	rm -f *.o primes
-
-# Комментарии:
-# 1. Цель "all" собирает основную программу primes.
-# 2. Цели "primes.o" и "calculate_primes.o" создают объектные файлы для исходных кодов.
-# 3. Цель "clean" удаляет скомпилированные файлы для очистки рабочей директории.
+	rm -f $(PRIMES_OBJS) $(GOLDBACH_OBJS) $(PRIMES_EXEC) $(GOLDBACH_EXEC)
+# Цель clean удаляет все объектные файлы (.o) и исполняемые файлы primes и goldbach.

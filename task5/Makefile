@@ -5,21 +5,26 @@ CFLAGS = -Wall -Wextra -std=c99
 all: calc
 
 # Сборка исполняемого файла calc
-calc: calc.o rational.o rat_math.o rat_io.o
-	$(CC) calc.o rational.o rat_math.o rat_io.o -o calc
+calc: rational calc.o
+	$(CC) calc.o -L./rational -lrational -o calc
 
 # Компиляция отдельных модулей
-calc.o: calc.c rational.h rat_math.h rat_io.h
-	$(CC) $(CFLAGS) -c calc.c -o calc.o
+calc.o: calc.c rational/rational.h rational/rat_math.h rational/rat_io.h
+	$(CC) $(CFLAGS) -I./rational -c calc.c -o calc.o
 
-rational.o: rational.c rational.h
-	$(CC) $(CFLAGS) -c rational.c -o rational.o
+rational.o: rational/rational.c rational/rational.h
+	$(CC) $(CFLAGS) -I./rational -c rational/rational.c -o rational.o
 
-rat_math.o: rat_math.c rat_math.h rational.h
-	$(CC) $(CFLAGS) -c rat_math.c -o rat_math.o
+rat_math.o: rational/rat_math.c rational/rat_math.h rational/rational.h
+	$(CC) $(CFLAGS) -I./rational -c rational/rat_math.c -o rat_math.o
 
-rat_io.o: rat_io.c rat_io.h rational.h
-	$(CC) $(CFLAGS) -c rat_io.c -o rat_io.o
+rat_io.o: rational/rat_io.c rational/rat_io.h rational/rational.h
+	$(CC) $(CFLAGS) -I./rational -c rational/rat_io.c -o rat_io.o
+
+# Цель для сборки библиотеки в подкаталоге rational
+.PHONY: rational
+rational:
+	cd rational && $(MAKE)
 
 # Удаление всех сгенерированных файлов
 clean:

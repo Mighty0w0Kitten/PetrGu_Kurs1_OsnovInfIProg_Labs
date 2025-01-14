@@ -27,7 +27,7 @@ int main()
 	printf("Простые числа от 2 до %d:\n", n);
 	for (int i = 2; i <= n; i++)
 	{
-		if (primes[i])
+		if (primes[i])/*if (primes[i]) равно if (primes[i] == 1)*/
 		{
 			printf("%d\n", i);
 		}

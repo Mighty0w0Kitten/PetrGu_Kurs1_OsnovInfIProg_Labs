@@ -41,7 +41,7 @@ int parse_expression(const char *input, rational_t *op1, rational_t *op2, char *
 			operator_count++;  // Увеличиваем счетчик операторов
 		}
 	}
-'\0'
+
 	// Разбор строки на операнды и оператор
 	int n = sscanf(input, "%s %c %s", op1_str, operator, op2_str);
 
